@@ -25,4 +25,20 @@ describe Bank do
       end
     end
   end
+
+  describe '#withdraw' do
+    context 'when the withdrawal amount is greater than the balance' do
+      it 'raises an error' do
+        expect { bank.withdraw(500) }.to raise_error "Insufficient funds available"
+      end
+    end
+
+    context 'when the withdrawal amount is less than or equal to the balance' do
+      it 'deducts the amount from the balance' do
+        bank.deposit(1000)
+
+        expect { bank.withdraw(500) }.to change { bank.balance }.from(1000).to(500)
+      end
+    end
+  end
 end
