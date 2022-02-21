@@ -7,4 +7,13 @@ describe 'User Stories' do
   it 'takes a deposit' do
     expect { bank.deposit(1000) }.to_not raise_error
   end
+
+  # As a earner
+  # So that use my money
+  # I want to make withdrawals
+  it 'accepts withdrawals' do
+    bank.deposit(1000)
+
+    expect { bank.withdraw(500) }.to_not raise_error
+  end
 end
