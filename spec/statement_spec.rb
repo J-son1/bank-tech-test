@@ -27,7 +27,7 @@ describe Statement do
           statement.add_transaction(deposit: 1000)
           statement.add_transaction(deposit: 2000)
           
-          expect { statement.print }.to output(header + transaction_1 + transaction_2).to_stdout
+          expect { statement.print }.to output(header + transaction_2 + transaction_1).to_stdout
         end
       end
     end
@@ -46,7 +46,7 @@ describe Statement do
           statement.add_transaction(deposit: 1000)
           statement.add_transaction(withdraw: 500)
   
-          expect { statement.print }.to output(header + transaction_1 + transaction_2).to_stdout
+          expect { statement.print }.to output(header + transaction_2 + transaction_1).to_stdout
         end
       end
     end
@@ -72,7 +72,18 @@ describe Statement do
         statement.add_transaction(deposit: 1000)
         statement.add_transaction(withdraw: 200)
         
-        expect { statement.print }.to output(header + transaction_1 + transaction_2).to_stdout
+        expect { statement.print }.to output(header + transaction_2 + transaction_1).to_stdout
+      end
+
+      it 'prints the transactions in reverse chronological order' do
+        transaction_1 = "#{date} || 1000 ||  || 1000\n"
+        transaction_2 = "#{date} ||  || 200 || 800\n"
+        transaction_3 = "#{date} || 3000 ||  || 3800\n"
+        statement.add_transaction(deposit: 1000)
+        statement.add_transaction(withdraw: 200)
+        statement.add_transaction(deposit: 3000)
+
+        expect { statement.print }.to output(header + transaction_3 + transaction_2 + transaction_1).to_stdout
       end
     end
   end

@@ -32,7 +32,7 @@ class Statement
   def create_statement
     puts "date || credit || debit || balance"
     
-    @transactions.each do |t|
+    @transactions.reverse.each do |t|
       puts "#{t[:date]} || #{t[:credit]} || #{t[:debit]} || #{t[:balance]}"
     end
   end
