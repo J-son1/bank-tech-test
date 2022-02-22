@@ -41,4 +41,12 @@ describe Bank do
       end
     end
   end
+
+  describe '#view_statement' do
+    context 'when no transactions have been made' do
+      it 'prints the statement header' do
+        expect { bank.view_statement }.to output("date || credit || debit || balance\n").to_stdout
+      end
+    end
+  end
 end

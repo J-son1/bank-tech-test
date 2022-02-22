@@ -14,4 +14,8 @@ class Bank
 
     @balance -= amount
   end
+
+  def view_statement
+    puts "date || credit || debit || balance"
+  end
 end
