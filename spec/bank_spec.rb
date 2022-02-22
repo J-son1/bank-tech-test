@@ -4,6 +4,7 @@ describe Bank do
   subject (:bank) { described_class.new }
 
   let(:header) { "date || credit || debit || balance\n" }
+  let(:date) { Time.now.strftime("%d/%m/%Y") }
 
   it 'has an initial balance of 0' do
     expect(bank.balance).to eq 0
@@ -52,18 +53,18 @@ describe Bank do
     end
 
     context 'when one or more transactions have been made' do
-      it 'prints the deposit amount' do
+      it 'prints the deposit amount with the date it was made' do
         bank.deposit(1000)
 
-        expect { bank.view_statement }.to output(header + " || 1000 ||  || 1000\n").to_stdout
+        expect { bank.view_statement }.to output(header + "#{date} || 1000 ||  || 1000\n").to_stdout
       end
 
-      it 'prints the withdrawal amount' do
+      it 'prints the withdrawal amount with the date it was made' do
         bank.deposit(1000)
         bank.withdraw(200)
-        transaction_1 = " || 1000 ||  || 1000\n"
-        transaction_2 = " ||  || 200 || 800\n"
-
+        transaction_1 = "#{date} || 1000 ||  || 1000\n"
+        transaction_2 = "#{date} ||  || 200 || 800\n"
+        
         expect { bank.view_statement }.to output(header + transaction_1 + transaction_2).to_stdout
       end
     end

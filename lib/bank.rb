@@ -7,17 +7,18 @@ class Bank
   end
 
   def deposit(amount)
+    creation_date = date_created
     @balance += amount
 
-    @transactions << create_transaction(date: "", credit: amount, debit: "", balance: @balance)
+    @transactions << create_transaction(date: creation_date, credit: amount, debit: "", balance: @balance)
   end
 
   def withdraw(amount)
     raise "Insufficient funds available" if @balance < amount
-
+    creation_date = date_created
     @balance -= amount
 
-    @transactions << create_transaction(date: "", credit: "", debit: amount, balance: @balance)
+    @transactions << create_transaction(date: creation_date, credit: "", debit: amount, balance: @balance)
   end
 
   def view_statement
@@ -37,5 +38,9 @@ class Bank
       debit: debit,
       balance: balance
     }
+  end
+
+  def date_created
+    Time.new.strftime("%d/%m/%Y")
   end
 end
