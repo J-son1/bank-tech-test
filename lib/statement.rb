@@ -5,8 +5,8 @@ class Statement
     @transaction = transaction
   end
 
-  def add_transaction(deposit: 0, withdrawal: 0)
-    @transaction.add(deposit: deposit, withdrawal: withdrawal)
+  def add_transaction(deposit: 0, withdraw: 0)
+    @transaction.add(deposit: deposit, withdraw: withdraw)
   end
 
   def print

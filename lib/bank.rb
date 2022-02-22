@@ -10,7 +10,7 @@ class Bank
   end
 
   def withdraw(amount)
-    @statement.add_transaction(withdrawal: amount)
+    @statement.add_transaction(withdraw: amount)
   end
 
   def view_statement

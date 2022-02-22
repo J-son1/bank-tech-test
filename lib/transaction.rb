@@ -6,10 +6,10 @@ class Transaction
     @all = []
   end
 
-  def add(deposit: 0, withdrawal: 0)    
-    update_balance(deposit: deposit, withdrawal: withdrawal)
+  def add(deposit: 0, withdraw: 0)    
+    update_balance(deposit: deposit, withdraw: withdraw)
 
-    @all << create_transaction(credit: deposit, debit: withdrawal)
+    @all << create_transaction(credit: deposit, debit: withdraw)
   end
 
   private
@@ -26,10 +26,10 @@ class Transaction
     }
   end
 
-  def update_balance(deposit: 0, withdrawal: 0)
-    raise "Insufficient funds available" if @balance < withdrawal
+  def update_balance(deposit: 0, withdraw: 0)
+    raise "Insufficient funds available" if @balance < withdraw
     @balance += deposit
-    @balance -= withdrawal
+    @balance -= withdraw
     
     @balance
   end
