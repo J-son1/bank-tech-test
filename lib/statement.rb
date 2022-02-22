@@ -9,7 +9,7 @@ class Statement
     @transaction.add(deposit: deposit, withdrawal: withdrawal)
   end
 
-  def print_statement
+  def print
     puts "date || credit || debit || balance"
     
     @transaction.all.each do |t|

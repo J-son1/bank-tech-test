@@ -14,6 +14,6 @@ class Bank
   end
 
   def view_statement
-    @statement.print_statement
+    @statement.print
   end
 end
