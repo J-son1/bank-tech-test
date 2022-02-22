@@ -1,19 +1,43 @@
-require_relative 'transaction'
-
 class Statement
-  def initialize(transaction: Transaction.new)
-    @transaction = transaction
+  def initialize
+    @balance = 0
+    @transactions = []
   end
 
   def add_transaction(deposit: 0, withdraw: 0)
-    @transaction.add(deposit: deposit, withdraw: withdraw)
+    create_transaction(credit: deposit, debit: withdraw)
   end
 
   def print
+    create_statement
+  end
+
+  private
+
+  def create_transaction(date: date_created, credit: 0, debit: 0)
+    raise "Insufficient funds available" if @balance < debit
+    credit == 0 ? credit = "" : @balance += credit
+    debit == 0 ? debit = "" : @balance -= debit
+
+    transaction = {
+      date: date,
+      credit: credit,
+      debit: debit,
+      balance: @balance
+    }
+
+    @transactions << transaction
+  end
+
+  def create_statement
     puts "date || credit || debit || balance"
     
-    @transaction.all.each do |t|
+    @transactions.each do |t|
       puts "#{t[:date]} || #{t[:credit]} || #{t[:debit]} || #{t[:balance]}"
     end
+  end
+
+  def date_created
+    Time.new.strftime("%d/%m/%Y")
   end
 end
