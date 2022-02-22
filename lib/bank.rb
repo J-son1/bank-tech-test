@@ -1,4 +1,4 @@
-require 'statement'
+require_relative 'statement'
 
 class Bank
   def initialize(statement: Statement.new)
@@ -6,11 +6,11 @@ class Bank
   end
 
   def deposit(amount)
-    @statement.add_deposit(amount)
+    @statement.add_transaction(deposit: amount)
   end
 
   def withdraw(amount)
-    @statement.add_withdrawal(amount)
+    @statement.add_transaction(withdrawal: amount)
   end
 
   def view_statement
