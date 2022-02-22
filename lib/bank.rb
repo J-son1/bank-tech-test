@@ -1,42 +1,19 @@
+require 'statement'
+
 class Bank
-  def initialize
-    @balance = 0
-    @transactions = []
+  def initialize(statement: Statement.new)
+    @statement = statement
   end
 
   def deposit(amount)
-    @balance += amount
-
-    @transactions << create_transaction(date: date_created, credit: amount, debit: "", balance: @balance)
+    @statement.add_deposit(amount)
   end
 
   def withdraw(amount)
-    raise "Insufficient funds available" if @balance < amount
-    @balance -= amount
-
-    @transactions << create_transaction(date: date_created, credit: "", debit: amount, balance: @balance)
+    @statement.add_withdrawal(amount)
   end
 
   def view_statement
-    puts "date || credit || debit || balance"
-    
-    @transactions.each do |t|
-      puts "#{t[:date]} || #{t[:credit]} || #{t[:debit]} || #{t[:balance]}"
-    end
-  end
-
-  private
-
-  def create_transaction(date:, credit:, debit:, balance:)
-    transaction = {
-      date: date,
-      credit: credit,
-      debit: debit,
-      balance: balance
-    }
-  end
-
-  def date_created
-    Time.new.strftime("%d/%m/%Y")
+    @statement.print_statement
   end
 end
