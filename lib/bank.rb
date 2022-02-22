@@ -1,24 +1,20 @@
 class Bank
-  attr_reader :balance
-
   def initialize
     @balance = 0
     @transactions = []
   end
 
   def deposit(amount)
-    creation_date = date_created
     @balance += amount
 
-    @transactions << create_transaction(date: creation_date, credit: amount, debit: "", balance: @balance)
+    @transactions << create_transaction(date: date_created, credit: amount, debit: "", balance: @balance)
   end
 
   def withdraw(amount)
     raise "Insufficient funds available" if @balance < amount
-    creation_date = date_created
     @balance -= amount
 
-    @transactions << create_transaction(date: creation_date, credit: "", debit: amount, balance: @balance)
+    @transactions << create_transaction(date: date_created, credit: "", debit: amount, balance: @balance)
   end
 
   def view_statement
