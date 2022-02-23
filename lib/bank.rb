@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 require_relative 'statement'
 
+# Allows a user to make desosit or withdrawal transactions
+# as well as print a statement to stdout to see their transaction history.
 class Bank
   def initialize(statement: Statement.new)
     @statement = statement

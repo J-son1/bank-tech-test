@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe 'User Stories' do
   subject(:bank) { Bank.new }
 

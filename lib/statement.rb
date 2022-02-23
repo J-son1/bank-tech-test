@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Handles the transaction logic and printing statements.
 class Statement
   def initialize
     @balance = 0
@@ -9,7 +12,7 @@ class Statement
   end
 
   def print
-    create_statement
+    print_statement
   end
 
   private
@@ -30,10 +33,10 @@ class Statement
     @transactions << transaction
   end
 
-  def create_statement
+  def print_statement
     puts 'date || credit || debit || balance'
 
-    @transactions.reverse.each do |t|
+    @transactions.reverse.map do |t|
       puts "#{t[:date]} || #{t[:credit]} || #{t[:debit]} || #{t[:balance]}"
     end
   end

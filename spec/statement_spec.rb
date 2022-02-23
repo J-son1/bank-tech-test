@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'statement'
 
 describe Statement do
@@ -42,7 +44,7 @@ describe Statement do
       context 'when the amount is less than or equal to the balance' do
         it 'deducts the amount from the balance' do
           transaction1 = "#{date} || 1000 ||  || 1000\n"
-          transaction2 = "#{date} ||  || 500 || 500\n"       
+          transaction2 = "#{date} ||  || 500 || 500\n"
           statement.add_transaction(deposit: 1000)
           statement.add_transaction(withdraw: 500)
 
