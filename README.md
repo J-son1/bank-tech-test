@@ -91,7 +91,7 @@ date || credit || debit || balance
 - I started with writing the necessary user stories, which I broke broke down into sub requirements where needed.
 - A domain model was extracted from the user stories to help to get an idea about the structure of the code.
 - I decided to start with one class and then extract classes out from there when needed. This was done in order to not create unnecessary classes.
-- In the end there where two classes, the Bank (account) class, and the Statement class.
+- After thinking that two classes would be enough (Bank, Statement), I decided to extract a third, which was the Transaction class, to better separate out responsibilities.
 
 ## Improvements
 
