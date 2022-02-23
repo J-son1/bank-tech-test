@@ -1,6 +1,6 @@
 # Bank tech test
 
-A small banking app that lets you print a statement of transactions you've made.
+A small banking app that lets you make transactions and print them in a statement.
 
 ---
 <br>
@@ -31,9 +31,9 @@ A small banking app that lets you print a statement of transactions you've made.
 ```
 3.0.0 :005 > b.view_statement
 date || credit || debit || balance
-22/02/2022 || 300 ||  || 1100
-22/02/2022 ||  || 200 || 800
-22/02/2022 || 1000 ||  || 1000
+22/02/2022 || 300.00 ||  || 1100.00
+22/02/2022 ||  || 200.00 || 800.00
+22/02/2022 || 1000.00 ||  || 1000.00
 ```
 
 ##### Methods
