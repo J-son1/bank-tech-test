@@ -20,8 +20,8 @@ class Statement
   def create_transaction(date: date_created, credit: 0, debit: 0)
     raise 'Insufficient funds available' if @balance < debit
 
-    credit.zero? ? credit = '' : @balance += credit
-    debit.zero? ? debit = '' : @balance -= debit
+    @balance += credit
+    @balance -= debit
 
     transaction = {
       date: date,
@@ -37,7 +37,11 @@ class Statement
     puts 'date || credit || debit || balance'
 
     @transactions.reverse.map do |t|
-      puts "#{t[:date]} || #{t[:credit]} || #{t[:debit]} || #{t[:balance]}"
+      credit = t[:credit].zero? ?  '' : '%.2f' % [t[:credit]]
+      debit = t[:debit].zero? ? debit = '' : '%.2f' % [t[:debit]]
+      balance = '%.2f' % [t[:balance]]
+
+      puts "#{t[:date]} || #{credit} || #{debit} || #{balance}"
     end
   end
 
