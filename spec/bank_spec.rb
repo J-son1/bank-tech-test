@@ -2,9 +2,9 @@ require 'bank'
 
 describe Bank do
   subject(:bank) { described_class.new(statement: statement) }
-  
-  let(:statement) { double("statement") }
-  
+
+  let(:statement) { double('statement') }
+
   before(:each) do
     allow(statement).to receive(:add_transaction)
     allow(statement).to receive(:view_statement)

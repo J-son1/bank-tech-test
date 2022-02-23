@@ -4,7 +4,7 @@ describe Statement do
   subject(:statement) { described_class.new }
 
   let(:header) { "date || credit || debit || balance\n" }
-  let(:date) { Time.now.strftime("%d/%m/%Y") }
+  let(:date) { Time.now.strftime('%d/%m/%Y') }
 
   it 'has an initial balance of 0' do
     expect { statement.print }.to output(header).to_stdout
@@ -15,38 +15,38 @@ describe Statement do
       context 'before the first deposit' do
         it 'sets the balance equal to the deposit' do
           statement.add_transaction(deposit: 1000)
-  
-          expect { statement.print }.to output(header + date + " || 1000 ||  || 1000\n").to_stdout
+
+          expect { statement.print }.to output("#{header}#{date} || 1000 ||  || 1000\n").to_stdout
         end
       end
-  
+
       context 'after an initial deposit has been made' do
         it 'adds to the balance' do
-          transaction_1 = "#{date} || 1000 ||  || 1000\n"
-          transaction_2 = "#{date} || 2000 ||  || 3000\n"
+          transaction1 = "#{date} || 1000 ||  || 1000\n"
+          transaction2 = "#{date} || 2000 ||  || 3000\n"
           statement.add_transaction(deposit: 1000)
           statement.add_transaction(deposit: 2000)
-          
-          expect { statement.print }.to output(header + transaction_2 + transaction_1).to_stdout
+
+          expect { statement.print }.to output(header + transaction2 + transaction1).to_stdout
         end
       end
     end
-  
+
     context 'when the transaction is a withdrawal' do
       context 'when amount is greater than the balance' do
         it 'raises an error' do
-          expect { statement.add_transaction(withdraw: 500) }.to raise_error "Insufficient funds available"
+          expect { statement.add_transaction(withdraw: 500) }.to raise_error 'Insufficient funds available'
         end
       end
-  
+
       context 'when the amount is less than or equal to the balance' do
         it 'deducts the amount from the balance' do
-          transaction_1 = "#{date} || 1000 ||  || 1000\n"
-          transaction_2 = "#{date} ||  || 500 || 500\n"       
+          transaction1 = "#{date} || 1000 ||  || 1000\n"
+          transaction2 = "#{date} ||  || 500 || 500\n"       
           statement.add_transaction(deposit: 1000)
           statement.add_transaction(withdraw: 500)
-  
-          expect { statement.print }.to output(header + transaction_2 + transaction_1).to_stdout
+
+          expect { statement.print }.to output(header + transaction2 + transaction1).to_stdout
         end
       end
     end
@@ -67,23 +67,23 @@ describe Statement do
       end
 
       it 'prints the withdrawal amount with the date it was made' do
-        transaction_1 = "#{date} || 1000 ||  || 1000\n"
-        transaction_2 = "#{date} ||  || 200 || 800\n"
+        transaction1 = "#{date} || 1000 ||  || 1000\n"
+        transaction2 = "#{date} ||  || 200 || 800\n"
         statement.add_transaction(deposit: 1000)
         statement.add_transaction(withdraw: 200)
-        
-        expect { statement.print }.to output(header + transaction_2 + transaction_1).to_stdout
+
+        expect { statement.print }.to output(header + transaction2 + transaction1).to_stdout
       end
 
       it 'prints the transactions in reverse chronological order' do
-        transaction_1 = "#{date} || 1000 ||  || 1000\n"
-        transaction_2 = "#{date} ||  || 200 || 800\n"
-        transaction_3 = "#{date} || 3000 ||  || 3800\n"
+        transaction1 = "#{date} || 1000 ||  || 1000\n"
+        transaction2 = "#{date} ||  || 200 || 800\n"
+        transaction3 = "#{date} || 3000 ||  || 3800\n"
         statement.add_transaction(deposit: 1000)
         statement.add_transaction(withdraw: 200)
         statement.add_transaction(deposit: 3000)
 
-        expect { statement.print }.to output(header + transaction_3 + transaction_2 + transaction_1).to_stdout
+        expect { statement.print }.to output(header + transaction3 + transaction2 + transaction1).to_stdout
       end
     end
   end

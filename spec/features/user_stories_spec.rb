@@ -1,6 +1,6 @@
 describe 'User Stories' do
   subject(:bank) { Bank.new }
-  
+
   # As a earner
   # So that I can store my money somewhere
   # I want to make deposits in a bank

@@ -15,9 +15,10 @@ class Statement
   private
 
   def create_transaction(date: date_created, credit: 0, debit: 0)
-    raise "Insufficient funds available" if @balance < debit
-    credit == 0 ? credit = "" : @balance += credit
-    debit == 0 ? debit = "" : @balance -= debit
+    raise 'Insufficient funds available' if @balance < debit
+
+    credit.zero? ? credit = '' : @balance += credit
+    debit.zero? ? debit = '' : @balance -= debit
 
     transaction = {
       date: date,
@@ -30,14 +31,14 @@ class Statement
   end
 
   def create_statement
-    puts "date || credit || debit || balance"
-    
+    puts 'date || credit || debit || balance'
+
     @transactions.reverse.each do |t|
       puts "#{t[:date]} || #{t[:credit]} || #{t[:debit]} || #{t[:balance]}"
     end
   end
 
   def date_created
-    Time.new.strftime("%d/%m/%Y")
+    Time.new.strftime('%d/%m/%Y')
   end
 end
