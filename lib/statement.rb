@@ -1,51 +1,32 @@
 # frozen_string_literal: true
 
-# Handles the transaction logic and printing statements.
+require_relative 'transaction'
+
+# Prints statements.
 class Statement
-  def initialize
-    @balance = 0
-    @transactions = []
+  def initialize(transaction: Transaction.new)
+    @transaction = transaction
   end
 
   def add_transaction(deposit: 0, withdraw: 0)
-    create_transaction(credit: deposit, debit: withdraw)
+    @transaction.create(credit: deposit, debit: withdraw)
   end
 
   def print
-    print_statement
+    print_statement(@transaction.all)
   end
 
   private
 
-  def create_transaction(date: date_created, credit: 0, debit: 0)
-    raise 'Insufficient funds available' if @balance < debit
-
-    @balance += credit
-    @balance -= debit
-
-    transaction = {
-      date: date,
-      credit: credit,
-      debit: debit,
-      balance: @balance
-    }
-
-    @transactions << transaction
-  end
-
-  def print_statement
+  def print_statement(transactions)
     puts 'date || credit || debit || balance'
 
-    @transactions.reverse.map do |t|
-      credit = t[:credit].zero? ?  '' : '%.2f' % [t[:credit]]
-      debit = t[:debit].zero? ? debit = '' : '%.2f' % [t[:debit]]
+    transactions.reverse.map do |t|
+      credit = t[:credit].zero? ? '' : '%.2f' % [t[:credit]]
+      debit = t[:debit].zero? ? '' : '%.2f' % [t[:debit]]
       balance = '%.2f' % [t[:balance]]
 
       puts "#{t[:date]} || #{credit} || #{debit} || #{balance}"
     end
-  end
-
-  def date_created
-    Time.new.strftime('%d/%m/%Y')
   end
 end
