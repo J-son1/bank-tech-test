@@ -23,12 +23,15 @@ A small banking app that lets you make transactions and print them in a statemen
 ### How to use
 
 ##### Example
-```
+```irb
 3.0.0 :001 > b = Bank.new
  => #<Bank:0x00007fd813942df0 @statement=#<Statement:0x00007fd813942d78 @balance=0, @transactions=[]>> 
-3.0.0 :002 > 
-```
-```
+3.0.0 :002 > b.deposit(1000)
+ => [{:date=>"22/02/2022", :credit=>1000, :debit=>0, :balance=>1000}] 
+3.0.0 :003 > b.withdraw(200)
+ => [{:date=>"22/02/2022", :credit=>1000, :debit=>0, :balance=>1000}, {:date=>"22/02/2022", :credit=>0, :debit=>200, :balance=>800}] 
+3.0.0 :004 > b.deposit(300)
+ => [{:date=>"22/02/2022", :credit=>1000, :debit=>0, :balance=>1000}, {:date=>"22/02/2022", :credit=>0, :debit=>200, :balance=>800}, {:date=>"22/02/2022", :credit=>300, :debit=>0, :balance=>1100}] 
 3.0.0 :005 > b.view_statement
 date || credit || debit || balance
 22/02/2022 || 300.00 ||  || 1100.00
