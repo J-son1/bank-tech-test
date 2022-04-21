@@ -5,6 +5,14 @@ require 'statement'
 describe Statement do
   subject(:statement) { described_class.new(transaction: transaction) }
 
+  before do
+    Timecop.freeze(Time.now)
+  end
+
+  after do
+    Timecop.return
+  end
+
   let(:date) { Time.now.strftime('%d/%m/%Y') }
   let(:header) { "date || credit || debit || balance\n" }
   let(:transaction) { double('transaction') }

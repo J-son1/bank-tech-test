@@ -5,6 +5,14 @@ require 'transaction'
 describe Transaction do
   subject(:transaction) { described_class.new }
 
+  before do
+    Timecop.freeze(Time.now)
+  end
+
+  after do
+    Timecop.return
+  end
+
   let(:date) { Time.now.strftime('%d/%m/%Y') }
 
   let(:transactions) do
