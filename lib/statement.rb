@@ -2,7 +2,6 @@
 
 require_relative 'transaction'
 
-# Prints statements.
 class Statement
   def initialize(transaction: Transaction.new)
     @transaction = transaction
@@ -12,8 +11,8 @@ class Statement
     @transaction.create(credit: deposit, debit: withdraw)
   end
 
-  def print
-    print_statement(@transaction.all)
+  def print(transactions)
+    print_statement(transactions)
   end
 
   private

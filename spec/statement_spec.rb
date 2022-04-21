@@ -5,13 +5,8 @@ require 'statement'
 describe Statement do
   subject(:statement) { described_class.new(transaction: transaction) }
 
-  before do
-    Timecop.freeze(Time.now)
-  end
-
-  after do
-    Timecop.return
-  end
+  before { Timecop.freeze(Time.now) }
+  after { Timecop.return }
 
   let(:date) { Time.now.strftime('%d/%m/%Y') }
   let(:header) { "date || credit || debit || balance\n" }
@@ -32,29 +27,34 @@ describe Statement do
   it 'has an initial balance of 0' do
     allow(statement).to receive(:print) { puts header }
 
-    expect { statement.print }.to output(header).to_stdout
+    expect { statement.print(transactions_data) }.to output(header).to_stdout
   end
 
   describe '#add_transaction' do
     context 'when the transaction is a deposit' do
       context 'before the first deposit' do
         it 'sets the balance equal to the deposit' do
+          transactions = [transactions_data[0]]
+          expected = "#{header}#{date} || 1000.55 ||  || 1000.55\n"
+
           allow(transaction).to receive(:create)
-          allow(transaction).to receive(:all).and_return([transactions_data[0]])
+          allow(transaction).to receive(:all).and_return(transactions)
 
           statement.add_transaction(deposit: 1000.55)
 
           expect(transaction).to have_received(:create).with({ credit: 1000.55, debit: 0 })
-          expect { statement.print }.to output("#{header}#{date} || 1000.55 ||  || 1000.55\n").to_stdout
+          expect { statement.print(transactions) }.to output(expected).to_stdout
         end
       end
 
       context 'after an initial deposit has been made' do
         it 'adds to the balance' do
-          t2 = { date: date, credit: 3000.55, debit: 0, balance: 4001.10 }
-          transaction2 = "#{date} || 3000.55 ||  || 4001.10\n"
+          transaction2_data = { date: date, credit: 3000.55, debit: 0, balance: 4001.10 }
+          transaction2_output = "#{date} || 3000.55 ||  || 4001.10\n"
+          transactions = [transactions_data[0], transaction2_data]
+          expected = header + transaction2_output + transactions_output[0]
 
-          allow(transaction).to receive(:all).and_return([transactions_data[0], t2])
+          allow(transaction).to receive(:all).and_return(transactions)
 
           expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 })
           expect(transaction).to receive(:create).with({ credit: 3000.55, debit: 0 })
@@ -62,7 +62,7 @@ describe Statement do
           statement.add_transaction(deposit: 1000.55)
           statement.add_transaction(deposit: 3000.55)
 
-          expect { statement.print }.to output(header + transaction2 + transactions_output[0]).to_stdout
+          expect { statement.print(transactions) }.to output(expected).to_stdout
         end
       end
     end
@@ -78,7 +78,10 @@ describe Statement do
 
       context 'when the amount is less than or equal to the balance' do
         it 'deducts the amount from the balance' do
-          allow(transaction).to receive(:all).and_return([transactions_data[0], transactions_data[1]])
+          transactions = [transactions_data[0], transactions_data[1]]
+          expected = header + transactions_output[1] + transactions_output[0]
+
+          allow(transaction).to receive(:all).and_return(transactions)
 
           expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 })
           expect(transaction).to receive(:create).with({ credit: 0, debit: 200.55 })
@@ -86,7 +89,7 @@ describe Statement do
           statement.add_transaction(deposit: 1000.55)
           statement.add_transaction(withdraw: 200.55)
 
-          expect { statement.print }.to output(header + transactions_output[1] + transactions_output[0]).to_stdout
+          expect { statement.print(transactions) }.to output(expected).to_stdout
         end
       end
     end
@@ -97,23 +100,29 @@ describe Statement do
       it 'prints the statement header' do
         allow(transaction).to receive(:all) { [] }
 
-        expect { statement.print }.to output(header).to_stdout
+        expect { statement.print([]) }.to output(header).to_stdout
       end
     end
 
     context 'when one or more transactions have been made' do
       it 'prints the deposit amount to 2 decimal places with the date it was made' do
-        allow(transaction).to receive(:all).and_return([transactions_data[0]])
+        transactions = [transactions_data[0]]
+        expected = header + transactions_output[0]
+        
+        allow(transaction).to receive(:all).and_return(transactions)
 
         expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 })
 
         statement.add_transaction(deposit: 1000.55)
 
-        expect { statement.print }.to output(header + transactions_output[0]).to_stdout
+        expect { statement.print(transactions) }.to output(expected).to_stdout
       end
 
       it 'prints the withdrawal amount with the date it was made' do
-        allow(transaction).to receive(:all).and_return([transactions_data[0], transactions_data[1]])
+        transactions = [transactions_data[0], transactions_data[1]]
+        expected = header + transactions_output[1] + transactions_output[0]
+
+        allow(transaction).to receive(:all).and_return(transactions)
 
         expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 })
         expect(transaction).to receive(:create).with({ credit: 0, debit: 200.55 })
@@ -121,10 +130,12 @@ describe Statement do
         statement.add_transaction(deposit: 1000.55)
         statement.add_transaction(withdraw: 200.55)
 
-        expect { statement.print }.to output(header + transactions_output[1] + transactions_output[0]).to_stdout
+        expect { statement.print(transactions) }.to output(expected).to_stdout
       end
 
       it 'prints the transactions in reverse chronological order' do
+        expected = header + transactions_output.reverse.join
+
         allow(transaction).to receive(:all).and_return(transactions_data)
 
         expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 })
@@ -135,7 +146,7 @@ describe Statement do
         statement.add_transaction(withdraw: 200.55)
         statement.add_transaction(deposit: 3000.55)
 
-        expect { statement.print }.to output(header + transactions_output.reverse.join).to_stdout
+        expect { statement.print(transactions_data) }.to output(expected).to_stdout
       end
     end
   end

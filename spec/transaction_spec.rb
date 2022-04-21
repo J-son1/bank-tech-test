@@ -5,13 +5,8 @@ require 'transaction'
 describe Transaction do
   subject(:transaction) { described_class.new }
 
-  before do
-    Timecop.freeze(Time.now)
-  end
-
-  after do
-    Timecop.return
-  end
+  before { Timecop.freeze(Time.now) }
+  after { Timecop.return }
 
   let(:date) { Time.now.strftime('%d/%m/%Y') }
 
@@ -23,27 +18,17 @@ describe Transaction do
 
   describe '#create' do
     it 'creates a deposit transaction' do
-      transaction.create(credit: 1000.55)
+      transaction_data = transaction.create(credit: 1000.55)
 
-      expect(transaction.all.first).to eq transactions[0]
+      expect(transaction_data).to eq transactions[0]
     end
 
     it 'creates a withdrawal transaction' do
-      transaction.create(credit: 1000.55)
-      transaction.create(debit: 200.55)
+      transactions = []
+      transactions << transaction.create(credit: 1000.55)
+      transactions << transaction.create(debit: 200.55)
 
-      expect(transaction.all.last).to eq transactions[1]
-    end
-  end
-
-  describe '#all' do
-    it 'returns an array of transactions' do
-      transaction.create(credit: 1000.55)
-      transaction.create(debit: 200.55)
-      transaction.create(credit: 3000.55)
-
-      expect(transaction.all).to eq transactions
-      expect(transaction.all.length).to eq 3
+      expect(transactions.last).to eq transactions[1]
     end
   end
 end
