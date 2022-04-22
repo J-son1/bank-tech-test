@@ -10,7 +10,7 @@ describe Bank do
   
   let(:date) { Time.now.strftime('%d/%m/%Y') }
   
-  let(:transactions) do
+  let(:transactions_data) do
     [{ date: date, credit: 1000.55, debit: 0, balance: 1000.55 },
       { date: date, credit: 0, debit: 200.55, balance: 800 },
       { date: date, credit: 3000.55, debit: 0, balance: 3800.55 }]
@@ -42,13 +42,13 @@ describe Bank do
 
   describe '#view_statement' do
     it 'can display a list of transactions' do
-      allow(statement).to receive(:add_transaction).with(deposit:1000.55).and_return(transactions[0])
-      allow(statement).to receive(:add_transaction).with(withdraw:200.55).and_return(transactions[1])
-      allow(statement).to receive(:add_transaction).with(deposit:3800.55).and_return(transactions[2])
+      allow(statement).to receive(:add_transaction).with(deposit:1000.55).and_return(transactions_data[0])
+      allow(statement).to receive(:add_transaction).with(withdraw:200.55).and_return(transactions_data[1])
+      allow(statement).to receive(:add_transaction).with(deposit:3800.55).and_return(transactions_data[2])
       bank.deposit(1000.55)
       bank.withdraw(200.55)
       bank.deposit(3800.55)
-      expect(statement).to receive(:print).with(transactions)
+      expect(statement).to receive(:print).with(transactions_data)
 
       bank.view_statement
     end

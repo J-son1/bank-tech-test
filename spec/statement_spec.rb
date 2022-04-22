@@ -11,7 +11,7 @@ describe Statement do
   let(:date) { Time.now.strftime('%d/%m/%Y') }
   let(:header) { "date || credit || debit || balance\n" }
   let(:transaction) { double('transaction') }
-  let(:statement_transactions) { [] }
+  let(:transaction_history) { [] }
 
   let(:transactions_data) do
     [{ date: date, credit: 1000.55, debit: 0, balance: 1000.55 },
@@ -39,9 +39,9 @@ describe Statement do
           
           expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 }).and_return(transactions_data[0])
 
-          statement_transactions << statement.add_transaction(deposit: 1000.55)
+          transaction_history << statement.add_transaction(deposit: 1000.55)
 
-          expect { statement.print(statement_transactions) }.to output(expected).to_stdout
+          expect { statement.print(transaction_history) }.to output(expected).to_stdout
         end
       end
 
@@ -54,10 +54,10 @@ describe Statement do
           expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 }).and_return(transactions_data[0])
           expect(transaction).to receive(:create).with({ credit: 3000.55, debit: 0 }).and_return(transaction2_data)
 
-          statement_transactions << statement.add_transaction(deposit: 1000.55)
-          statement_transactions << statement.add_transaction(deposit: 3000.55)
+          transaction_history << statement.add_transaction(deposit: 1000.55)
+          transaction_history << statement.add_transaction(deposit: 3000.55)
 
-          expect { statement.print(statement_transactions) }.to output(expected).to_stdout
+          expect { statement.print(transaction_history) }.to output(expected).to_stdout
         end
       end
     end
@@ -78,10 +78,10 @@ describe Statement do
           expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 }).and_return(transactions_data[0])
           expect(transaction).to receive(:create).with({ credit: 0, debit: 200.55 }).and_return(transactions_data[1])
 
-          statement_transactions << statement.add_transaction(deposit: 1000.55)
-          statement_transactions << statement.add_transaction(withdraw: 200.55)
+          transaction_history << statement.add_transaction(deposit: 1000.55)
+          transaction_history << statement.add_transaction(withdraw: 200.55)
 
-          expect { statement.print(statement_transactions) }.to output(expected).to_stdout
+          expect { statement.print(transaction_history) }.to output(expected).to_stdout
         end
       end
     end
@@ -102,9 +102,9 @@ describe Statement do
         
         expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 }).and_return(transactions_data[0])
 
-        statement_transactions << statement.add_transaction(deposit: 1000.55)
+        transaction_history << statement.add_transaction(deposit: 1000.55)
 
-        expect { statement.print(statement_transactions) }.to output(expected).to_stdout
+        expect { statement.print(transaction_history) }.to output(expected).to_stdout
       end
 
       it 'prints the withdrawal amount with the date it was made' do
@@ -113,10 +113,10 @@ describe Statement do
         expect(transaction).to receive(:create).with({ credit: 1000.55, debit: 0 }).and_return(transactions_data[0])
         expect(transaction).to receive(:create).with({ credit: 0, debit: 200.55 }).and_return(transactions_data[1])
 
-        statement_transactions << statement.add_transaction(deposit: 1000.55)
-        statement_transactions << statement.add_transaction(withdraw: 200.55)
+        transaction_history << statement.add_transaction(deposit: 1000.55)
+        transaction_history << statement.add_transaction(withdraw: 200.55)
 
-        expect { statement.print(statement_transactions) }.to output(expected).to_stdout
+        expect { statement.print(transaction_history) }.to output(expected).to_stdout
       end
 
       it 'prints the transactions in reverse chronological order' do
@@ -126,11 +126,11 @@ describe Statement do
         expect(transaction).to receive(:create).with({ credit: 0, debit: 200.55 }).and_return(transactions_data[1])
         expect(transaction).to receive(:create).with({ credit: 3000.55, debit: 0 }).and_return(transactions_data[2])
 
-        statement_transactions << statement.add_transaction(deposit: 1000.55)
-        statement_transactions << statement.add_transaction(withdraw: 200.55)
-        statement_transactions << statement.add_transaction(deposit: 3000.55)
+        transaction_history << statement.add_transaction(deposit: 1000.55)
+        transaction_history << statement.add_transaction(withdraw: 200.55)
+        transaction_history << statement.add_transaction(deposit: 3000.55)
 
-        expect { statement.print(statement_transactions) }.to output(expected).to_stdout
+        expect { statement.print(transaction_history) }.to output(expected).to_stdout
       end
     end
   end

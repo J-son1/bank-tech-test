@@ -5,18 +5,18 @@ require_relative 'statement'
 class Bank
   def initialize(statement: Statement.new)
     @statement = statement
-    @transactions = []
+    @transaction_history = []
   end
 
   def deposit(amount)
-    @transactions << @statement.add_transaction(deposit: amount)
+    @transaction_history << @statement.add_transaction(deposit: amount)
   end
 
   def withdraw(amount)
-    @transactions << @statement.add_transaction(withdraw: amount)
+    @transaction_history << @statement.add_transaction(withdraw: amount)
   end
 
   def view_statement
-    @statement.print(@transactions)
+    @statement.print(@transaction_history)
   end
 end

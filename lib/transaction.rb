@@ -17,7 +17,12 @@ class Transaction
     @balance += credit
     @balance -= debit
 
-    transaction = { date: date_created, credit: credit, debit: debit, balance: @balance }
+    transaction = { 
+      date: date_created,
+      credit: credit,
+      debit: debit,
+      balance: @balance
+    }
   end
 
   def date_created

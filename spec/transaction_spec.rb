@@ -9,8 +9,9 @@ describe Transaction do
   after { Timecop.return }
 
   let(:date) { Time.now.strftime('%d/%m/%Y') }
-
-  let(:transactions) do
+  let(:transaction_history) { [] }
+  let(:transaction_data) { {} }
+  let(:transactions_data) do
     [{ date: date, credit: 1000.55, debit: 0, balance: 1000.55 },
      { date: date, credit: 0, debit: 200.55, balance: 800 },
      { date: date, credit: 3000.55, debit: 0, balance: 3800.55 }]
@@ -20,15 +21,14 @@ describe Transaction do
     it 'creates a deposit transaction' do
       transaction_data = transaction.create(credit: 1000.55)
 
-      expect(transaction_data).to eq transactions[0]
+      expect(transaction_data).to eq transactions_data[0]
     end
 
     it 'creates a withdrawal transaction' do
-      transactions = []
-      transactions << transaction.create(credit: 1000.55)
-      transactions << transaction.create(debit: 200.55)
+      transaction_history << transaction.create(credit: 1000.55)
+      transaction_history << transaction.create(debit: 200.55)
 
-      expect(transactions.last).to eq transactions[1]
+      expect(transaction_history.last).to eq transactions_data[1]
     end
   end
 end
