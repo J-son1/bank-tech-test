@@ -53,12 +53,12 @@ date || credit || debit || balance
 
 1. run `rspec` in project root.
 
-All existing tests pass with 100% coverage.
+> **All existing tests pass with 100% coverage.**
 
 ##### Dependencies
 
 The dependencies used in this app where predominantly for testing.
-It uses RSpec for testing and SimpleCov for test coverage.
+It uses `rspec` for testing, `simplecov` for test coverage and `simplecov-console` for formatting test coverage output.
 
 ---
 
