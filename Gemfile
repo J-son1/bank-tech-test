@@ -9,4 +9,5 @@ group :development, :test do
   gem 'rubocop', '1.20'
   gem 'simplecov', require: false, group: :test
   gem 'timecop'
+  gem 'simplecov-console'
 end
