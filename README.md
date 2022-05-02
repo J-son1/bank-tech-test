@@ -3,7 +3,18 @@
 A small banking app that lets you make transactions and print them in a statement.
 
 ---
-<br>
+
+## Contents
+
+- [Installation](#install-and-run)<br>
+- [Usage](#how-to-use)<br>
+- [Running Tests](#how-to-run-tests)<br>
+- [Test coverage](#all-tests-pass-with-100-coverage)<br>
+- [Specification](#specification)<br>
+- [Approach to Task](#approach)<br>
+- [Improvements](#improvements)
+
+
 
 ## Install and run
 
@@ -53,7 +64,9 @@ date || credit || debit || balance
 
 1. run `rspec` in project root.
 
-> **All existing tests pass with 100% coverage.**
+#### All tests pass with 100% coverage.
+
+<img width="600" src="./public/images/bank-tests.png">
 
 ##### Dependencies
 
@@ -98,7 +111,6 @@ date || credit || debit || balance
 
 ## Improvements
 
-- Format statement output to be more readable.
 - Account for more edge cases.
 - Further refactor code for potential future customisation.
-- 
+- Format statement output to be more readable.

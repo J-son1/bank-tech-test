@@ -24,7 +24,7 @@ describe Bank do
   end
 
   describe '#deposit' do
-    it 'should create a deposit transaction' do
+    it 'creates a deposit transaction' do
       expect(statement).to receive(:add_transaction)
 
       bank.deposit(1000)
@@ -32,7 +32,7 @@ describe Bank do
   end
 
   describe '#withdraw' do
-    it 'should create a withdrawal transaction' do
+    it 'creates a withdrawal transaction' do
       bank.deposit(1000)
       expect(statement).to receive(:add_transaction)
 
@@ -41,7 +41,7 @@ describe Bank do
   end
 
   describe '#view_statement' do
-    it 'can display a list of transactions' do
+    it 'displays a list of transactions' do
       allow(statement).to receive(:add_transaction).with(deposit:1000.55).and_return(transactions_data[0])
       allow(statement).to receive(:add_transaction).with(withdraw:200.55).and_return(transactions_data[1])
       allow(statement).to receive(:add_transaction).with(deposit:3800.55).and_return(transactions_data[2])
